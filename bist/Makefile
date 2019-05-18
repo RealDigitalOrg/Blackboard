@@ -1,8 +1,9 @@
-SDK_FILES := $(shell ls -A bist_proj/bist.sdk/ -I system_wrapper.hdf) 
 
 all:
-	vivado -mode batch -source tcl/project.tcl tcl/compile.tcl
+	vivado -mode batch -source tcl/create_project.tcl
 	xsdk -batch -source tcl/xsdk_sw.tcl
+
+SDK_FILES := $(shell ls -A bist_proj/bist.sdk/ -I system_wrapper.hdf) 
 
 test:
 	@echo $(SDK_FILES)
