@@ -57,7 +57,7 @@ set_property -dict { PACKAGE_PIN K17   IOSTANDARD LVCMOS33 } [get_ports { GYRO_S
 set_property -dict { PACKAGE_PIN K16   IOSTANDARD LVCMOS33 } [get_ports { GYRO_SS_M }];
 ## Interrupts
 set_property -dict { PACKAGE_PIN L20   IOSTANDARD LVCMOS33 } [get_ports { GYRO_DRDY_M }];
-set_property -dict { PACKAGE_PIN M20   IOSTANDARD LVCMOS33 } [get_ports { GYRO_INT_AG }];
+set_property -dict { PACKAGE_PIN M20   IOSTANDARD LVCMOS33 } [get_ports { GYRO_INT1_AG }];
 set_property -dict { PACKAGE_PIN L19   IOSTANDARD LVCMOS33 } [get_ports { GYRO_INT_M }];
 ## GYRO_DEN_AG is connected to PS_GPIO pin 23
 set_property -dict { PACKAGE_PIN J14   IOSTANDARD LVCMOS33 } [get_ports { PS_GPIO_tri_io[23] }];
