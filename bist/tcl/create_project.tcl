@@ -50,6 +50,7 @@ namespace eval _tcl {
 }
 variable script_folder
 set script_folder [_tcl::get_script_folder]
+puts $script_folder
 
 variable script_file
 set script_file "create_project.tcl"
@@ -58,7 +59,7 @@ set script_file "create_project.tcl"
 # START
 ################################################################
 
-set ip_repo_path        {$script_folder/../../ip_repo}
+set ip_repo_path        $script_folder/../../ip_repo
 set bd_name             {system}
 set device              {xc7z007sclg400-1}
 set project_name        {bist}
@@ -109,6 +110,7 @@ if { $list_projs eq "" } {
 }
 
 # Set IP Repository
+puts ${ip_repo_path}
 set_property ip_repo_paths ${ip_repo_path} [current_fileset]
 update_ip_catalog -rebuild
 
@@ -135,9 +137,10 @@ proc apply_ps_presets { cell presetFile } {
 }
 
 proc create_ps { parentCell cellName } {
+    global script_folder
     # Add Zynq processing system
     set ps_cell [ create_bd_cell -type ip -vlnv xilinx.com:ip:processing_system7 $cellName ]
-    apply_ps_presets $ps_cell ../presets/BlackBoard_ps_presets.tcl
+    apply_ps_presets $ps_cell $script_folder/../../presets/BlackBoard_ps_presets.tcl
     set_property -dict [list \
         CONFIG.PCW_USE_S_AXI_HP0 {1} \
         CONFIG.PCW_GPIO_EMIO_GPIO_ENABLE {1} \
@@ -412,7 +415,7 @@ if {[string equal [get_filesets -quiet constrs_1] ""]} {
     create_fileset -constrset constrs_1
 }
 set obj [get_filesets constrs_1]
-set file "[file normalize "constraints/system.xdc"]"
+set file "[file normalize "$script_folder/../constraints/system.xdc"]"
 set file_imported [import_files -fileset constrs_1 [list $file]]
 
 puts ""
