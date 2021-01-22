@@ -1,54 +1,5 @@
-###############################################################################
-#
-# Copyright (c) 2018, RealDigital
-# All rights reserved.
-#
-# Redistribution and use in source and binary forms, with or without
-# modification, are permitted provided that the following conditions are met:
-# 
-# * Redistributions of source code must retain the above copyright notice, this
-#   list of conditions and the following disclaimer.
-# 
-# * Redistributions in binary form must reproduce the above copyright notice,
-#   this list of conditions and the following disclaimer in the documentation
-#   and/or other materials provided with the distribution.
-# 
-# * Neither the name of the copyright holder nor the names of its
-#   contributors may be used to endorse or promote products derived from
-#   this software without specific prior written permission.
-# 
-# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE 
-# ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE 
-# LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR 
-# CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF 
-# SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS 
-# INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
-# CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-# ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
-# POSSIBILITY OF SUCH DAMAGE.
-#
-###############################################################################
-
-###############################################################################
-# @file BlackBoard_ps_presets.tcl
-#
-# Default configuration for Zynq 7 processing system for Blackboard rev.D.
-#
-# <pre>
-# MODIFICATION HISTORY:
-# 
-# Ver   Who  Date       Changes
-# ----- ---- ---------- -------------------------------------------------------
-# 1.00a TW   10/13/2018 initial release
-#
-# </pre>
-#
-###############################################################################
-
 proc getPresetInfo {} {
-  return [dict create name {BlackBoard_revD_ps_preset} description {BlackBoard_revD_ps_preset}  vlnv xilinx.com:ip:processing_system7:5.5 display_name {BlackBoard_revD_ps_preset} ]
+  return [dict create name {BlackBoard_revB_ps_presets} description {BlackBoard_revB_ps_presets}  vlnv xilinx.com:ip:processing_system7:5.5 display_name {BlackBoard_revB_ps_presets} ]
 }
 
 proc validate_preset {IPINST} { return true }
@@ -74,6 +25,10 @@ proc apply_preset {IPINST} {
     CONFIG.PCW_UART_PERIPHERAL_FREQMHZ {100}  \
     CONFIG.PCW_SPI_PERIPHERAL_FREQMHZ {166.666666}  \
     CONFIG.PCW_I2C_PERIPHERAL_FREQMHZ {111.111115}  \
+    CONFIG.PCW_TTC_PERIPHERAL_FREQMHZ {50}  \
+    CONFIG.PCW_TTC0_CLK0_PERIPHERAL_FREQMHZ {133.333333}  \
+    CONFIG.PCW_TTC0_CLK1_PERIPHERAL_FREQMHZ {133.333333}  \
+    CONFIG.PCW_TTC0_CLK2_PERIPHERAL_FREQMHZ {133.333333}  \
     CONFIG.PCW_FPGA0_PERIPHERAL_FREQMHZ {100}  \
     CONFIG.PCW_FPGA1_PERIPHERAL_FREQMHZ {3.072}  \
     CONFIG.PCW_ACT_APU_PERIPHERAL_FREQMHZ {666.666687}  \
@@ -138,21 +93,26 @@ proc apply_preset {IPINST} {
     CONFIG.PCW_SDIO_PERIPHERAL_VALID {1}  \
     CONFIG.PCW_SPI_PERIPHERAL_VALID {1}  \
     CONFIG.PCW_UART_PERIPHERAL_VALID {1}  \
-    CONFIG.PCW_EN_EMIO_GPIO {0}  \
+    CONFIG.PCW_EN_EMIO_GPIO {1}  \
+    CONFIG.PCW_EN_EMIO_I2C0 {0}  \
     CONFIG.PCW_EN_EMIO_I2C1 {0}  \
+    CONFIG.PCW_EN_EMIO_SPI0 {1}  \
     CONFIG.PCW_EN_EMIO_SPI1 {0}  \
     CONFIG.PCW_EN_EMIO_UART0 {0}  \
-    CONFIG.PCW_USE_DMA0 {0}  \
-    CONFIG.PCW_USE_DMA1 {0}  \
+    CONFIG.PCW_EN_EMIO_TTC0 {1}  \
+    CONFIG.PCW_USE_S_AXI_HP0 {1}  \
     CONFIG.PCW_USE_FABRIC_INTERRUPT {1}  \
-    CONFIG.PCW_GPIO_EMIO_GPIO_WIDTH {64}  \
+    CONFIG.PCW_GPIO_EMIO_GPIO_WIDTH {16}  \
     CONFIG.PCW_EN_QSPI {1}  \
     CONFIG.PCW_EN_GPIO {1}  \
+    CONFIG.PCW_EN_I2C0 {0}  \
     CONFIG.PCW_EN_I2C1 {1}  \
     CONFIG.PCW_EN_SDIO0 {1}  \
+    CONFIG.PCW_EN_SPI0 {1}  \
     CONFIG.PCW_EN_SPI1 {1}  \
     CONFIG.PCW_EN_UART0 {1}  \
     CONFIG.PCW_EN_UART1 {1}  \
+    CONFIG.PCW_EN_TTC0 {1}  \
     CONFIG.PCW_EN_USB0 {1}  \
     CONFIG.PCW_EN_CLK1_PORT {1}  \
     CONFIG.PCW_IRQ_F2P_INTR {1}  \
@@ -197,12 +157,22 @@ proc apply_preset {IPINST} {
     CONFIG.PCW_UART1_PERIPHERAL_ENABLE {1}  \
     CONFIG.PCW_UART1_UART1_IO {MIO 48 .. 49}  \
     CONFIG.PCW_UART1_GRP_FULL_ENABLE {0}  \
+    CONFIG.PCW_SPI0_PERIPHERAL_ENABLE {1}  \
+    CONFIG.PCW_SPI0_SPI0_IO {EMIO}  \
+    CONFIG.PCW_SPI0_GRP_SS0_ENABLE {1}  \
+    CONFIG.PCW_SPI0_GRP_SS0_IO {EMIO}  \
+    CONFIG.PCW_SPI0_GRP_SS1_ENABLE {1}  \
+    CONFIG.PCW_SPI0_GRP_SS1_IO {EMIO}  \
+    CONFIG.PCW_SPI0_GRP_SS2_ENABLE {1}  \
+    CONFIG.PCW_SPI0_GRP_SS2_IO {EMIO}  \
     CONFIG.PCW_SPI1_PERIPHERAL_ENABLE {1}  \
     CONFIG.PCW_SPI1_SPI1_IO {MIO 10 .. 15}  \
     CONFIG.PCW_SPI1_GRP_SS0_ENABLE {1}  \
     CONFIG.PCW_SPI1_GRP_SS0_IO {MIO 13}  \
     CONFIG.PCW_SPI1_GRP_SS1_ENABLE {0}  \
     CONFIG.PCW_SPI1_GRP_SS2_ENABLE {0}  \
+    CONFIG.PCW_TTC0_PERIPHERAL_ENABLE {1}  \
+    CONFIG.PCW_TTC0_TTC0_IO {EMIO}  \
     CONFIG.PCW_USB0_PERIPHERAL_ENABLE {1}  \
     CONFIG.PCW_USB0_USB0_IO {MIO 28 .. 39}  \
     CONFIG.PCW_USB_RESET_ENABLE {1}  \
@@ -210,6 +180,8 @@ proc apply_preset {IPINST} {
     CONFIG.PCW_USB0_RESET_ENABLE {1}  \
     CONFIG.PCW_USB0_RESET_IO {MIO 46}  \
     CONFIG.PCW_USB1_RESET_ENABLE {0}  \
+    CONFIG.PCW_I2C0_PERIPHERAL_ENABLE {0}  \
+    CONFIG.PCW_I2C0_GRP_INT_ENABLE {0}  \
     CONFIG.PCW_I2C0_RESET_ENABLE {0}  \
     CONFIG.PCW_I2C1_PERIPHERAL_ENABLE {1}  \
     CONFIG.PCW_I2C1_I2C1_IO {MIO 20 .. 21}  \
@@ -219,9 +191,9 @@ proc apply_preset {IPINST} {
     CONFIG.PCW_I2C1_RESET_ENABLE {0}  \
     CONFIG.PCW_GPIO_MIO_GPIO_ENABLE {1}  \
     CONFIG.PCW_GPIO_MIO_GPIO_IO {MIO}  \
-    CONFIG.PCW_GPIO_EMIO_GPIO_ENABLE {0}  \
-    CONFIG.PCW_GPIO_EMIO_GPIO_IO {<Select>}  \
-    CONFIG.PCW_MIO_0_PULLUP {disabled}  \
+    CONFIG.PCW_GPIO_EMIO_GPIO_ENABLE {1}  \
+    CONFIG.PCW_GPIO_EMIO_GPIO_IO {16}  \
+    CONFIG.PCW_MIO_0_PULLUP {enabled}  \
     CONFIG.PCW_MIO_0_IOTYPE {LVCMOS 3.3V}  \
     CONFIG.PCW_MIO_0_DIRECTION {inout}  \
     CONFIG.PCW_MIO_0_SLEW {slow}  \
@@ -257,7 +229,7 @@ proc apply_preset {IPINST} {
     CONFIG.PCW_MIO_8_IOTYPE {LVCMOS 3.3V}  \
     CONFIG.PCW_MIO_8_DIRECTION {out}  \
     CONFIG.PCW_MIO_8_SLEW {slow}  \
-    CONFIG.PCW_MIO_9_PULLUP {disabled}  \
+    CONFIG.PCW_MIO_9_PULLUP {enabled}  \
     CONFIG.PCW_MIO_9_IOTYPE {LVCMOS 3.3V}  \
     CONFIG.PCW_MIO_9_DIRECTION {inout}  \
     CONFIG.PCW_MIO_9_SLEW {slow}  \
@@ -285,19 +257,19 @@ proc apply_preset {IPINST} {
     CONFIG.PCW_MIO_15_IOTYPE {LVCMOS 3.3V}  \
     CONFIG.PCW_MIO_15_DIRECTION {out}  \
     CONFIG.PCW_MIO_15_SLEW {slow}  \
-    CONFIG.PCW_MIO_16_PULLUP {disabled}  \
+    CONFIG.PCW_MIO_16_PULLUP {enabled}  \
     CONFIG.PCW_MIO_16_IOTYPE {LVCMOS 3.3V}  \
     CONFIG.PCW_MIO_16_DIRECTION {inout}  \
     CONFIG.PCW_MIO_16_SLEW {slow}  \
-    CONFIG.PCW_MIO_17_PULLUP {disabled}  \
+    CONFIG.PCW_MIO_17_PULLUP {enabled}  \
     CONFIG.PCW_MIO_17_IOTYPE {LVCMOS 3.3V}  \
     CONFIG.PCW_MIO_17_DIRECTION {inout}  \
     CONFIG.PCW_MIO_17_SLEW {slow}  \
-    CONFIG.PCW_MIO_18_PULLUP {disabled}  \
+    CONFIG.PCW_MIO_18_PULLUP {enabled}  \
     CONFIG.PCW_MIO_18_IOTYPE {LVCMOS 3.3V}  \
     CONFIG.PCW_MIO_18_DIRECTION {inout}  \
     CONFIG.PCW_MIO_18_SLEW {slow}  \
-    CONFIG.PCW_MIO_19_PULLUP {disabled}  \
+    CONFIG.PCW_MIO_19_PULLUP {enabled}  \
     CONFIG.PCW_MIO_19_IOTYPE {LVCMOS 3.3V}  \
     CONFIG.PCW_MIO_19_DIRECTION {inout}  \
     CONFIG.PCW_MIO_19_SLEW {slow}  \
@@ -309,23 +281,23 @@ proc apply_preset {IPINST} {
     CONFIG.PCW_MIO_21_IOTYPE {LVCMOS 3.3V}  \
     CONFIG.PCW_MIO_21_DIRECTION {inout}  \
     CONFIG.PCW_MIO_21_SLEW {slow}  \
-    CONFIG.PCW_MIO_22_PULLUP {disabled}  \
+    CONFIG.PCW_MIO_22_PULLUP {enabled}  \
     CONFIG.PCW_MIO_22_IOTYPE {LVCMOS 3.3V}  \
     CONFIG.PCW_MIO_22_DIRECTION {inout}  \
     CONFIG.PCW_MIO_22_SLEW {slow}  \
-    CONFIG.PCW_MIO_23_PULLUP {disabled}  \
+    CONFIG.PCW_MIO_23_PULLUP {enabled}  \
     CONFIG.PCW_MIO_23_IOTYPE {LVCMOS 3.3V}  \
     CONFIG.PCW_MIO_23_DIRECTION {inout}  \
     CONFIG.PCW_MIO_23_SLEW {slow}  \
-    CONFIG.PCW_MIO_24_PULLUP {disabled}  \
+    CONFIG.PCW_MIO_24_PULLUP {enabled}  \
     CONFIG.PCW_MIO_24_IOTYPE {LVCMOS 3.3V}  \
     CONFIG.PCW_MIO_24_DIRECTION {inout}  \
     CONFIG.PCW_MIO_24_SLEW {slow}  \
-    CONFIG.PCW_MIO_25_PULLUP {disabled}  \
+    CONFIG.PCW_MIO_25_PULLUP {enabled}  \
     CONFIG.PCW_MIO_25_IOTYPE {LVCMOS 3.3V}  \
     CONFIG.PCW_MIO_25_DIRECTION {inout}  \
     CONFIG.PCW_MIO_25_SLEW {slow}  \
-    CONFIG.PCW_MIO_26_PULLUP {disabled}  \
+    CONFIG.PCW_MIO_26_PULLUP {enabled}  \
     CONFIG.PCW_MIO_26_IOTYPE {LVCMOS 3.3V}  \
     CONFIG.PCW_MIO_26_DIRECTION {inout}  \
     CONFIG.PCW_MIO_26_SLEW {slow}  \
@@ -421,19 +393,19 @@ proc apply_preset {IPINST} {
     CONFIG.PCW_MIO_49_IOTYPE {LVCMOS 3.3V}  \
     CONFIG.PCW_MIO_49_DIRECTION {in}  \
     CONFIG.PCW_MIO_49_SLEW {slow}  \
-    CONFIG.PCW_MIO_50_PULLUP {disabled}  \
+    CONFIG.PCW_MIO_50_PULLUP {enabled}  \
     CONFIG.PCW_MIO_50_IOTYPE {LVCMOS 3.3V}  \
     CONFIG.PCW_MIO_50_DIRECTION {inout}  \
     CONFIG.PCW_MIO_50_SLEW {slow}  \
-    CONFIG.PCW_MIO_51_PULLUP {disabled}  \
+    CONFIG.PCW_MIO_51_PULLUP {enabled}  \
     CONFIG.PCW_MIO_51_IOTYPE {LVCMOS 3.3V}  \
     CONFIG.PCW_MIO_51_DIRECTION {inout}  \
     CONFIG.PCW_MIO_51_SLEW {slow}  \
-    CONFIG.PCW_MIO_52_PULLUP {disabled}  \
+    CONFIG.PCW_MIO_52_PULLUP {enabled}  \
     CONFIG.PCW_MIO_52_IOTYPE {LVCMOS 3.3V}  \
     CONFIG.PCW_MIO_52_DIRECTION {inout}  \
     CONFIG.PCW_MIO_52_SLEW {slow}  \
-    CONFIG.PCW_MIO_53_PULLUP {disabled}  \
+    CONFIG.PCW_MIO_53_PULLUP {enabled}  \
     CONFIG.PCW_MIO_53_IOTYPE {LVCMOS 3.3V}  \
     CONFIG.PCW_MIO_53_DIRECTION {inout}  \
     CONFIG.PCW_MIO_53_SLEW {slow}  \

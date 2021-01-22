@@ -2,14 +2,13 @@
 # File: create_project.tcl
 # Author: Tinghui Wang
 #
-# Copyright (c) 2018-2019, RealDigital.org
+# Copyright (c) 2020, RealDigital.org
 #
 # Description:
-#   Vivado tcl script to generate BIST project for BlackBoard.
+#   Vivado tcl script to generate BIST project for BlackBoard, rev. B.
 #
 # History:
-#   10/13/18: Initial release
-#   04/20/19: Update system design for BlackBoard Rev. D.
+#   01/24/20: Initial release.
 #  
 # License: BSD 3-Clause
 #
@@ -59,7 +58,7 @@ set script_file "create_project.tcl"
 # START
 ################################################################
 
-set ip_repo_path        $script_folder/../../ip_repo
+set ip_repo_path        $script_folder/../../../ip_repo
 set bd_name             {system}
 set device              {xc7z007sclg400-1}
 set project_name        {bist}
@@ -103,6 +102,27 @@ if { $::argc > 0 } {
   }
 }
 
+# Memory Map
+set gpio_btn_offset        0x41200000
+set gpio_led_offset        0x41210000
+set gpio_sw_offset         0x41220000
+set gpio_hdmi_offset       0x41230000
+set iic_hdmi_offset        0x41600000
+set pwm_servo_4_offset     0x42800000
+set hdmi_vdma_offset       0x43000000
+set rgb_pwm_offset         0x43C00000
+set seven_seg_display_offset 0x43C10000
+set pdm_audio_offset         0x43C20000
+set hdmi_v_tc_offset         0x43C30000
+set clk_wiz_offset           0x43C40000
+set xadc_wiz_offset          0x43C50000
+
+# Rev.D only
+# set esp32_uart1_offset     0x42C00000
+
+# Rev.B only
+set rgb_pwm_2_offset       0x43C60000
+
 # Create project
 set list_projs [get_projects -quiet]
 if { $list_projs eq "" } {
@@ -140,11 +160,11 @@ proc create_ps { parentCell cellName } {
     global script_folder
     # Add Zynq processing system
     set ps_cell [ create_bd_cell -type ip -vlnv xilinx.com:ip:processing_system7 $cellName ]
-    apply_ps_presets $ps_cell $script_folder/../../presets/BlackBoard_ps_presets.tcl
+    apply_ps_presets $ps_cell $script_folder/../../../presets/BlackBoard_revB_ps_presets.tcl
     set_property -dict [list \
         CONFIG.PCW_USE_S_AXI_HP0 {1} \
         CONFIG.PCW_GPIO_EMIO_GPIO_ENABLE {1} \
-        CONFIG.PCW_GPIO_EMIO_GPIO_IO {24} \
+        CONFIG.PCW_GPIO_EMIO_GPIO_IO {16} \
         CONFIG.PCW_SPI0_PERIPHERAL_ENABLE {1} \
         CONFIG.PCW_TTC0_PERIPHERAL_ENABLE {1} \
     ] $ps_cell
@@ -169,7 +189,7 @@ set pwm_servo_4 [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_timer pwm_serv
 apply_bd_automation -rule xilinx.com:bd_rule:axi4 -config { Clk_master {Auto} Clk_slave {Auto} Clk_xbar {Auto} Master {/processing_system7_0/M_AXI_GP0} } [get_bd_intf_pins pwm_servo_4/S_AXI] 
 set servo_4 [ create_bd_port -dir O servo_4 ]
 connect_bd_net -net pwm_servo_4_pwm0 $servo_4 [ get_bd_pins pwm_servo_4/pwm0 ]
-
+set_property offset $pwm_servo_4_offset [get_bd_addr_segs {processing_system7_0/Data/SEG_pwm_servo_4_Reg}]
 
 # Create instance: LSM9DS1_SPI_Bridge and set properties
 set lsm9ds1_spi_bridge [ create_bd_cell -type ip -vlnv realdigital.org:realdigital:LSM9DS1_SPI_Bridge:1.0 LSM9DS1_SPI_Bridge ]
@@ -200,34 +220,44 @@ set_property -dict [ list \
 apply_bd_automation -rule xilinx.com:bd_rule:axi4 -config { Clk_master {Auto} Clk_slave {Auto} Clk_xbar {Auto} Master {/processing_system7_0/M_AXI_GP0} } [get_bd_intf_pins gpio_btn/S_AXI] 
 set btns_4bits [ create_bd_intf_port -mode Master -vlnv xilinx.com:interface:gpio_rtl:1.0 btns_4bits ]
 connect_bd_intf_net -intf_net gpio_btn_GPIO [get_bd_intf_ports btns_4bits] [get_bd_intf_pins gpio_btn/GPIO]
+set_property offset $gpio_btn_offset [get_bd_addr_segs {processing_system7_0/Data/SEG_gpio_btn_Reg}]
 
 # Create instance: gpio_led and set properties  
 set gpio_led [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_gpio gpio_led ]
 set_property -dict [ list \
     CONFIG.C_ALL_OUTPUTS {1} \
-    CONFIG.C_GPIO_WIDTH {10} \
+    CONFIG.C_GPIO_WIDTH {4} \
     CONFIG.C_INTERRUPT_PRESENT {1} \
 ] $gpio_led
 apply_bd_automation -rule xilinx.com:bd_rule:axi4 -config { Clk_master {Auto} Clk_slave {Auto} Clk_xbar {Auto} Master {/processing_system7_0/M_AXI_GP0} } [get_bd_intf_pins gpio_led/S_AXI] 
-set leds_10bits [ create_bd_intf_port -mode Master -vlnv xilinx.com:interface:gpio_rtl:1.0 leds_10bits ]
-connect_bd_intf_net -intf_net gpio_led_GPIO [get_bd_intf_ports leds_10bits] [get_bd_intf_pins gpio_led/GPIO]
+set leds_4bits [ create_bd_intf_port -mode Master -vlnv xilinx.com:interface:gpio_rtl:1.0 leds_4bits ]
+connect_bd_intf_net -intf_net gpio_led_GPIO [get_bd_intf_ports leds_4bits] [get_bd_intf_pins gpio_led/GPIO]
+set_property offset $gpio_led_offset [get_bd_addr_segs {processing_system7_0/Data/SEG_gpio_led_Reg}]
 
 # Create instance: gpio_sw and set properties
 set gpio_sw [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_gpio gpio_sw ]
 set_property -dict [ list \
     CONFIG.C_ALL_INPUTS {1} \
-    CONFIG.C_GPIO_WIDTH {12} \
+    CONFIG.C_GPIO_WIDTH {8} \
     CONFIG.C_INTERRUPT_PRESENT {1} \
 ] $gpio_sw
 apply_bd_automation -rule xilinx.com:bd_rule:axi4 -config { Clk_master {Auto} Clk_slave {Auto} Clk_xbar {Auto} Master {/processing_system7_0/M_AXI_GP0} } [get_bd_intf_pins gpio_sw/S_AXI] 
-set sws_12bits [ create_bd_intf_port -mode Master -vlnv xilinx.com:interface:gpio_rtl:1.0 sws_12bits ]
-connect_bd_intf_net -intf_net gpio_sw_btn_GPIO [get_bd_intf_ports sws_12bits] [get_bd_intf_pins gpio_sw/GPIO]
+set sws_8bits [ create_bd_intf_port -mode Master -vlnv xilinx.com:interface:gpio_rtl:1.0 sws_8bits ]
+connect_bd_intf_net -intf_net gpio_sw_btn_GPIO [get_bd_intf_ports sws_8bits] [get_bd_intf_pins gpio_sw/GPIO]
+set_property offset $gpio_sw_offset [get_bd_addr_segs {processing_system7_0/Data/SEG_gpio_sw_Reg}]
 
 # Create instance: rgb_pwm, and set properties
-set rgb_pwm [ create_bd_cell -type ip -vlnv realdigital.org:realdigital:axi_pwm rgb_pwm ]
-apply_bd_automation -rule xilinx.com:bd_rule:axi4 -config { Clk_master {Auto} Clk_slave {Auto} Clk_xbar {Auto} Master {/processing_system7_0/M_AXI_GP0} } [get_bd_intf_pins rgb_pwm/S_AXI]
-set rgb_pwm_pins [ create_bd_port -from 5 -to 0 -dir O rgb_pwm ]
-connect_bd_net -net net_rgb_pwm $rgb_pwm_pins [get_bd_pins rgb_pwm/pwm] 
+set rgb_pwm_1 [ create_bd_cell -type ip -vlnv realdigital.org:realdigital:axi_pwm rgb_pwm_1 ]
+apply_bd_automation -rule xilinx.com:bd_rule:axi4 -config { Clk_master {Auto} Clk_slave {Auto} Clk_xbar {Auto} Master {/processing_system7_0/M_AXI_GP0} } [get_bd_intf_pins rgb_pwm_1/S_AXI]
+set rgb_pwm_1_pins [ create_bd_port -from 11 -to 0 -dir O rgb_pwm_1 ]
+connect_bd_net -net net_rgb_pwm_1 $rgb_pwm_1_pins [get_bd_pins rgb_pwm_1/pwm] 
+set_property offset $rgb_pwm_offset [get_bd_addr_segs {processing_system7_0/Data/SEG_rgb_pwm_1_S_AXI_reg}]
+
+set rgb_pwm_2 [ create_bd_cell -type ip -vlnv realdigital.org:realdigital:axi_pwm rgb_pwm_2 ]
+apply_bd_automation -rule xilinx.com:bd_rule:axi4 -config { Clk_master {Auto} Clk_slave {Auto} Clk_xbar {Auto} Master {/processing_system7_0/M_AXI_GP0} } [get_bd_intf_pins rgb_pwm_2/S_AXI]
+set rgb_pwm_2_pins [ create_bd_port -from 11 -to 0 -dir O rgb_pwm_2 ]
+connect_bd_net -net net_rgb_pwm_2 $rgb_pwm_2_pins [get_bd_pins rgb_pwm_2/pwm] 
+set_property offset $rgb_pwm_2_offset [get_bd_addr_segs {processing_system7_0/Data/SEG_rgb_pwm_2_S_AXI_reg}]
 
 # Create instance: seven_seg_display, and set properties
 set seven_seg_display [create_bd_cell -type ip -vlnv realdigital.org:realdigital:seven_seg_display:1.0 seven_seg_display]
@@ -241,15 +271,7 @@ set ssd_dp [ create_bd_port -dir O ssd_dp ]
 connect_bd_net -net net_ssd_an $ssd_an [get_bd_pins seven_seg_display/anode]
 connect_bd_net -net net_ssd_cathode $ssd_cathode [get_bd_pins seven_seg_display/cathode]
 connect_bd_net -net net_ssd_dp $ssd_dp [get_bd_pins seven_seg_display/dp]
-
-# Create instance: esp32_uart1, and set properties
-set esp32_uart1 [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_uartlite esp32_uart1 ]
-set_property -dict [ list \
-    CONFIG.C_BAUDRATE {115200} \
-] $esp32_uart1
-apply_bd_automation -rule xilinx.com:bd_rule:axi4 -config { Clk_master {Auto} Clk_slave {Auto} Clk_xbar {Auto} Master {/processing_system7_0/M_AXI_GP0} } [get_bd_intf_pins esp32_uart1/S_AXI] 
-set esp32_uart1 [ create_bd_intf_port -mode Master -vlnv xilinx.com:interface:uart_rtl:1.0 esp32_uart1 ]
-connect_bd_intf_net -intf_net esp32_uart1_UART [get_bd_intf_ports esp32_uart1] [get_bd_intf_pins esp32_uart1/UART]
+set_property offset $seven_seg_display_offset [get_bd_addr_segs {processing_system7_0/Data/SEG_seven_seg_display_S_AXI_reg}]
 
 # Create instance: pdm_audio, and set properties
 set pdm_audio [ create_bd_cell -type ip -vlnv realdigital.org:realdigital:pdm_audio:1.0 pdm_audio ]
@@ -263,6 +285,7 @@ connect_bd_net -net net_pdm_speaker_l [get_bd_ports pdm_speaker_l] [get_bd_pins 
 connect_bd_net -net net_pdm_mic_mclk [get_bd_ports pdm_mic_mclk] [get_bd_pins pdm_audio/pdm_mic_mclk]
 connect_bd_net -net net_pdm_mic_data [get_bd_ports pdm_mic] [get_bd_pins pdm_audio/pdm_mic]
 connect_bd_net -net processing_system7_0_FCLK_CLK1 [get_bd_pins pdm_audio/pdm_mclk] [get_bd_pins processing_system7_0/FCLK_CLK1]
+set_property offset $pdm_audio_offset [get_bd_addr_segs {processing_system7_0/Data/SEG_pdm_audio_S_AXI_reg}]
 
 # HDMI Video Subsystem
 # Create instance: gpio_hdmi, and set properties
@@ -275,12 +298,14 @@ set_property -dict [ list \
 apply_bd_automation -rule xilinx.com:bd_rule:axi4 -config { Clk_master {Auto} Clk_slave {Auto} Clk_xbar {Auto} Master {/processing_system7_0/M_AXI_GP0} } [get_bd_intf_pins gpio_hdmi/S_AXI] 
 set hdmi_hpd [ create_bd_intf_port -mode Master -vlnv xilinx.com:interface:gpio_rtl:1.0 hdmi_hpd ]
 connect_bd_intf_net -intf_net gpio_hdmi_GPIO [get_bd_intf_ports hdmi_hpd] [get_bd_intf_pins gpio_hdmi/GPIO]
+set_property offset $gpio_hdmi_offset [get_bd_addr_segs {processing_system7_0/Data/SEG_gpio_hdmi_Reg}]
 
 # Create instance: iic_hdmi, and set properties
 set iic_hdmi [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_iic iic_hdmi ]
 apply_bd_automation -rule xilinx.com:bd_rule:axi4 -config { Clk_master {Auto} Clk_slave {Auto} Clk_xbar {Auto} Master {/processing_system7_0/M_AXI_GP0} } [get_bd_intf_pins iic_hdmi/S_AXI] 
 set hdmi_ddc [ create_bd_intf_port -mode Master -vlnv xilinx.com:interface:iic_rtl:1.0 hdmi_ddc ]
 connect_bd_intf_net -intf_net iic_hdmi_IIC [get_bd_intf_ports hdmi_ddc] [get_bd_intf_pins iic_hdmi/IIC]
+set_property offset $iic_hdmi_offset [get_bd_addr_segs {processing_system7_0/Data/SEG_iic_hdmi_Reg}]
 
 # Create instance: hdmi_vdma, and set properties
 set hdmi_vdma [ create_bd_cell -type ip -vlnv xilinx.com:ip:axi_vdma hdmi_vdma ]
@@ -296,6 +321,7 @@ set_property -dict [ list \
 apply_bd_automation -rule xilinx.com:bd_rule:axi4 -config { Clk_master {Auto} Clk_slave {Auto} Clk_xbar {Auto} Master {/processing_system7_0/M_AXI_GP0} } [get_bd_intf_pins hdmi_vdma/S_AXI_LITE] 
 apply_bd_automation -rule xilinx.com:bd_rule:axi4 -config { Clk_master {Auto} Clk_slave {Auto} Clk_xbar {Auto} Master {/hdmi_vdma/M_AXI_MM2S} Slave {/processing_system7_0/S_AXI_HP0} intc_ip {Auto} master_apm {0}}  [get_bd_intf_pins processing_system7_0/S_AXI_HP0]
 connect_bd_net [get_bd_pins hdmi_vdma/m_axis_mm2s_aclk] [get_bd_pins processing_system7_0/FCLK_CLK0]
+set_property offset $hdmi_vdma_offset [get_bd_addr_segs {processing_system7_0/Data/SEG_hdmi_vdma_Reg}]
 
 # Create instance: hdmi_axi4s_vid_out, and set properties 
 set hdmi_axi4s_vid_out [ create_bd_cell -type ip -vlnv xilinx.com:ip:v_axi4s_vid_out hdmi_axi4s_vid_out ]
@@ -316,6 +342,7 @@ set_property -dict [ list \
 apply_bd_automation -rule xilinx.com:bd_rule:axi4 -config { Clk_master {Auto} Clk_slave {Auto} Clk_xbar {Auto} Master {/processing_system7_0/M_AXI_GP0} } [get_bd_intf_pins hdmi_v_tc/ctrl] 
 connect_bd_intf_net -intf_net hdmi_v_tc_vtiming_out [get_bd_intf_pins hdmi_axi4s_vid_out/vtiming_in] [get_bd_intf_pins hdmi_v_tc/vtiming_out]
 connect_bd_net -net hdmi_axi4s_vid_out_vtg_ce [get_bd_pins hdmi_axi4s_vid_out/vtg_ce] [get_bd_pins hdmi_v_tc/gen_clken]
+set_property offset $hdmi_v_tc_offset [get_bd_addr_segs {processing_system7_0/Data/SEG_hdmi_v_tc_Reg}]
 
 # Create instance: hdmi_tx, and set properties
 set hdmi_tx [ create_bd_cell -type ip -vlnv realdigital.org:realdigital:hdmi_tx hdmi_tx ]
@@ -361,22 +388,28 @@ connect_bd_net -net pxl_clk5 [get_bd_pins clk_wiz/clk_out2] [get_bd_pins hdmi_tx
 connect_bd_net -net clk_wiz_locked [get_bd_pins clk_wiz/locked] [get_bd_pins hdmi_tx/pix_clk_locked]
 set clk100_in [ create_bd_port -dir I -type clk clk100_in ]
 connect_bd_net [get_bd_pins clk_wiz/clk_in1] $clk100_in 
+set_property offset $clk_wiz_offset [get_bd_addr_segs {processing_system7_0/Data/SEG_clk_wiz_Reg}]
 
 # Create instance: xadc
 set xadc_wiz [ create_bd_cell -type ip -vlnv xilinx.com:ip:xadc_wiz xadc_wiz ]
 apply_bd_automation -rule xilinx.com:bd_rule:axi4 -config { Clk_master {Auto} Clk_slave {Auto} Clk_xbar {Auto} Master {/processing_system7_0/M_AXI_GP0} } [get_bd_intf_pins xadc_wiz/s_axi_lite]
 set vp_vn [ create_bd_intf_port -mode Slave -vlnv xilinx.com:interface:diff_analog_io_rtl:1.0 vp_vn ]
 connect_bd_intf_net -intf_net xadc_wiz_vp_vn [get_bd_intf_pins xadc_wiz/Vp_Vn] $vp_vn
+set_property offset $xadc_wiz_offset [get_bd_addr_segs {processing_system7_0/Data/SEG_xadc_wiz_Reg}]
 
 # Create instance: intr_concat, and set properties
 set intr_concat [ create_bd_cell -type ip -vlnv xilinx.com:ip:xlconcat intr_concat ]
 set_property -dict [ list \
     CONFIG.NUM_PORTS {16} \
 ] $intr_concat
+set constant_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:xlconstant constant_0 ]
+set_property -dict [ list \
+    CONFIG.CONST_VAL {0} \
+] $constant_0
 connect_bd_net -net pdm_audio_0_spkLIntr [get_bd_pins intr_concat/In0] [get_bd_pins pdm_audio/spkLIntr]
 connect_bd_net -net pdm_audio_0_spkRIntr [get_bd_pins intr_concat/In1] [get_bd_pins pdm_audio/spkRIntr]
 connect_bd_net -net pdm_audio_0_micIntr [get_bd_pins intr_concat/In2] [get_bd_pins pdm_audio/micIntr]
-connect_bd_net -net esp32_uart1_irpt [get_bd_pins esp32_uart1/interrupt] [get_bd_pins intr_concat/In3]
+connect_bd_net -net constant_Intr [get_bd_pins constant_0/dout] [get_bd_pins intr_concat/In3]
 connect_bd_net -net gpio_sw_ip2intc_irpt [get_bd_pins gpio_sw/ip2intc_irpt] [get_bd_pins intr_concat/In4]
 connect_bd_net -net gpio_led_ip2intc_irpt [get_bd_pins gpio_led/ip2intc_irpt] [get_bd_pins intr_concat/In5]
 connect_bd_net -net gpio_btn_ip2intc_irpt [get_bd_pins gpio_btn/ip2intc_irpt] [get_bd_pins intr_concat/In6]
@@ -434,14 +467,10 @@ puts "# Implementation Done"
 puts "############################################"
 puts ""
 
-# Export locally to SDK
-puts ""
-puts "############################################"
-puts "# Export to SDK locally"
-puts "############################################"
-puts ""
-set sdk_workspace $project_dir/$project_name.sdk
-file mkdir $sdk_workspace
-set hw_spec_file $sdk_workspace/system_wrapper.hdf
-file copy $project_dir/$project_name.runs/impl_1/system_wrapper.sysdef $hw_spec_file
 
+puts ""
+puts "############################################"
+puts "# Exporting Hardware"
+puts "############################################"
+puts ""
+write_hw_platform -fixed -force  -include_bit -file $project_dir/$project_name.xsa

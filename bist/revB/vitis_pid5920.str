@@ -1,0 +1,99 @@
+/*
+
+Xilinx Vitis v2019.2 (64-bit) [Major: 2019, Minor: 2]
+SW Build: 2708876 on Wed Nov 6 21:40:25 MST 2019
+
+Process ID (PID): 5920
+License: Customer
+
+Current time: 	Wed Feb 26 07:40:52 PST 2020
+Time zone: 	Pacific Standard Time (America/Los_Angeles)
+
+OS: CentOS Linux release 8.1.1911 (Core)
+OS Version: 4.18.0-147.5.1.el8_1.x86_64
+OS Architecture: amd64
+Available processors (cores): 8
+
+Display: :1
+Screen size: 1920x1080
+Screen resolution (DPI): 100
+Available screens: 1
+Available disk space: 1,625 GB
+
+Java version: 	9.0.4 64-bit
+Java home: 	/tools/Xilinx/Vitis/2019.2/tps/lnx64/jre9.0.4
+Java executable location: 	/tools/Xilinx/Vitis/2019.2/tps/lnx64/jre9.0.4/bin/java
+Java initial memory (-Xms): 	64 MB
+Java maximum memory (-Xmx):	 4 GB
+
+Java library paths: /tools/Xilinx/Vitis/2019.2/lib/lnx64.o/Default:/tools/Xilinx/Vitis/2019.2/lib/lnx64.o:/tools/Xilinx/Vitis/2019.2/tps/lnx64/jre9.0.4/lib/:/tools/Xilinx/Vitis/2019.2/tps/lnx64/jre9.0.4/lib//server:/tools/Xilinx/Vitis/2019.2/lib/lnx64.o:/tools/Xilinx/Vitis/2019.2/lib/lnx64.o/Default:/tools/Xilinx/Vitis/2019.2/lib/lnx64.o:/tools/Xilinx/Vitis/2019.2/lib/lnx64.o/Default:/tools/Xilinx/Vitis/2019.2/lib/lnx64.o:/tools/Xilinx/Vitis/2019.2/runtime/lib/x86_64:/tools/Xilinx/Vitis/2019.2/lib/lnx64.o/Default:/tools/Xilinx/Vitis/2019.2/lib/lnx64.o:/tools/Xilinx/Vitis/2019.2/runtime/lib/x86_64:/usr/local/cuda-10.1/lib64:/usr/local/cuda-10.1/lib64::/tools/Xilinx/Vitis/2019.2/bin/../lnx64/tools/dot/lib:/usr/java/packages/lib:/usr/lib64:/lib64:/lib:/usr/lib
+
+Java class paths: /tools/Xilinx/Vitis/2019.2/eclipse/lnx64.o//plugins/org.eclipse.equinox.launcher_1.5.0.v20180512-1130.jar
+LD_LIBRARY_PATH: /tools/Xilinx/Vitis
+
+User name: 	stwg
+User home directory: /home/stwg
+User working directory: /home/stwg/Workspace/blackboard/bist/revB
+User country: 	US
+User language: 	en
+User locale: 	en_US
+
+RDI_BASEROOT: /tools/Xilinx/Vitis
+HDI_APPROOT: /tools/Xilinx/Vitis/2019.2
+RDI_DATADIR: /tools/Xilinx/Vitis/2019.2/data
+RDI_BINDIR: /tools/Xilinx/Vitis/2019.2/bin
+
+Vitis preferences directory: /home/stwg/.Xilinx/Vitis/2019.2/
+Vitis workspace directory: /home/stwg/Workspace/blackboard/bist/revB/bist_proj/bist.xsdk
+Vitis workspace log file location: /home/stwg/Workspace/blackboard/bist/revB/bist_proj/bist.xsdk/.metadata/.log
+Engine tmp dir: 	./.Xil/sdx-5920-ubuntu-server
+
+Xilinx Environment Variables
+----------------------------
+XILINX_DSP: 
+XILINX_ENABLE_SCOUT_HLS: 0
+XILINX_HLS: /tools/Xilinx/Vivado/2019.2
+XILINX_PLANAHEAD: /tools/Xilinx/Vitis/2019.2
+XILINX_SDK: /tools/Xilinx/Vitis/2019.2
+XILINX_VITIS: /tools/Xilinx/Vitis/2019.2
+XILINX_VIVADO: /tools/Xilinx/Vivado/2019.2
+XILINX_VIVADO_HLS: /tools/Xilinx/Vivado/2019.2
+_RDI_DONT_SET_XILINX_AS_PATH: True
+
+
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+
+*/
+
+closeView("Welcome", "ViewIntroAdapterPart", "CTabItem.WELCOME");
+selectMenuItem("File", "WorkbenchWindow", "MenuItem.FILE");
+selectMenuItem("New", "WorkbenchWindow", "MenuItem.NEW");
+selectMenuItem("Platform Project", "WorkbenchWindow", "MenuItem.PLATFORM_PROJECT");
+setTextField("blackboard_bist", "New Platform Project (Create new platform project)", "NewPlatformProjectWizard", "Text.PROJECT_NAME");
+selectButton("Next", "New Platform Project (Create new platform project)", "NewPlatformProjectWizard", "Button.NEXT");
+selectButton("Back", "New Platform Project (Platform Project)", "NewPlatformProjectWizard", "Button.BACK");
+selectButton("Next", "New Platform Project (Create new platform project)", "NewPlatformProjectWizard", "Button.NEXT");
+selectButton("Next", "New Platform Project (Platform Project)", "NewPlatformProjectWizard", "Button.NEXT");
+selectButton("Browse", "New Platform Project (Platform Project Specification)", "NewPlatformProjectWizard", "Button.BROWSE");
+setFileDialog("/home/stwg/Workspace/blackboard/bist/revB/bist_proj/bist.xsa", "Hardware Specification File", "SDXFileDialog", "Button.OK");
+selectButton("Finish", "New Platform Project (Platform Project Specification)", "NewPlatformProjectWizard", "Button.FINISH");
+selectTree("Board Support Package", "blackboard_bist > ps7_cortexa9_0 > zynq_fsbl", "blackboard_bist", "ScwEditor", "Tree");
+selectTree("Board Support Package", "blackboard_bist > ps7_cortexa9_0 > standalone on ps7_cortexa9_0", "blackboard_bist", "ScwEditor", "Tree");
+selectButton("Modify BSP Settings", "blackboard_bist", "ScwEditor", "Button.MODIFY_BSP_SETTINGS");
+selectTreeTable("Overview", "Board Support Package Settings", "BspSettingsView", "TreeViewer.NavInfoProvider");
+selectTreeTable("ps7_cortexa9_0", "Overview > drivers", "Board Support Package Settings", "BspSettingsView", "TreeViewer.NavInfoProvider");
+selectTreeTable("standalone", "Overview", "Board Support Package Settings", "BspSettingsView", "TreeViewer.NavInfoProvider");
+selectTreeTable("stdin", "Overview", "Board Support Package Settings", "BspSettingsView", "TreeViewer.PropertyProvider");
+selectTreeTable("stdout", "Overview", "Board Support Package Settings", "BspSettingsView", "TreeViewer.PropertyProvider");
+selectButton("OK", "Board Support Package Settings", "BspSettingsView", "Button.OK");
+selectTree("blackboard_bist", EventType.POPUP_TRIGGER_CLICK, "Explorer", "ProjectExplorer", "Tree");
+selectMenuItem("Build Project", "Explorer", "ProjectExplorer", "MenuItem.BUILD_PROJECT");
+selectTree("blackboard_bist", EventType.POPUP_TRIGGER_CLICK, "Explorer", "ProjectExplorer", "Tree");
+selectMenuItem("Clean Project", "Explorer", "ProjectExplorer", "MenuItem.CLEAN_PROJECT");
+selectMenuItem("File", "blackboard_bist", "WorkbenchWindow", "MenuItem.FILE");
+selectMenuItem("Export", "blackboard_bist", "WorkbenchWindow", "MenuItem.EXPORT");
+selectTree("Platform Projects", "Export Vitis Projects", "SdxArchiveExportDialog", "Tree.PLATFORM_PROJECTS");
+setTextField("BlackBoard_revB_plat_v1_00_beta_2.zip", "Export Vitis Projects", "SdxArchiveExportDialog", "Text.ARCHIVE_FILE");
+setTextField("/home/stwg", "Export Vitis Projects", "SdxArchiveExportDialog", "Text.DIRECTORY");
+selectButton("OK", "Export Vitis Projects", "SdxArchiveExportDialog", "Button.OK");
+selectButton("OK", "Export Vitis Projects", "MessageDialog", "Button.OK");
