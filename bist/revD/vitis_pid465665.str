@@ -1,0 +1,100 @@
+/*
+
+Xilinx Vitis v2020.1.0 (64-bit) [Major: 2020, Minor: 1]
+SW Build 2902540 on Wed May 27 19:55:13 MDT 2020
+
+Process ID (PID): 465665
+License: Customer
+
+Current time: 	Thu Sep 10 07:45:29 PDT 2020
+Time zone: 	Pacific Standard Time (America/Los_Angeles)
+
+OS: CentOS Linux release 8.2.2004 (Core)
+OS Version: 4.18.0-193.6.3.el8_2.x86_64
+OS Architecture: amd64
+Available processors (cores): 8
+
+Display: :1
+Screen size: 1536x864
+Available screens: 1
+Available disk space: 1,544 GB
+
+Java version: 	9.0.4 64-bit
+Java home: 	/tools/Xilinx/Vitis/2020.1/tps/lnx64/jre9.0.4
+Java executable location: 	/tools/Xilinx/Vitis/2020.1/tps/lnx64/jre9.0.4/bin/java
+Java initial memory (-Xms): 	64 MB
+Java maximum memory (-Xmx):	 4 GB
+
+Java library paths: /tools/Xilinx/Vitis/2020.1/lib/lnx64.o/Default:/tools/Xilinx/Vitis/2020.1/lib/lnx64.o:/tools/Xilinx/Vitis/2020.1/tps/lnx64/jre9.0.4/lib/:/tools/Xilinx/Vitis/2020.1/tps/lnx64/jre9.0.4/lib//server:/tools/Xilinx/Vitis/2020.1/lib/lnx64.o:/tools/Xilinx/Vitis/2020.1/lib/lnx64.o/Default:/tools/Xilinx/Vitis/2020.1/lib/lnx64.o:/usr/local/cuda-10.1/lib64:/usr/local/cuda-10.1/lib64:/usr/local/cuda-10.1/lib64::/tools/Xilinx/Vitis/2020.1/bin/../lnx64/tools/dot/lib:/usr/java/packages/lib:/usr/lib64:/lib64:/lib:/usr/lib
+
+Java class paths: /tools/Xilinx/Vitis/2020.1/eclipse/lnx64.o//plugins/org.eclipse.equinox.launcher_1.5.0.v20180512-1130.jar
+LD_LIBRARY_PATH: /tools/Xilinx/Vitis
+
+User name: 	stwg
+User home directory: /home/stwg
+User working directory: /home/stwg/Workspace/blackboard/bist/revD
+User country: 	US
+User language: 	en
+User locale: 	en_US
+
+RDI_BASEROOT: /tools/Xilinx/Vitis
+HDI_APPROOT: /tools/Xilinx/Vitis/2020.1
+RDI_DATADIR: /tools/Xilinx/Vitis/2020.1/data
+RDI_BINDIR: /tools/Xilinx/Vitis/2020.1/bin
+
+Vitis preferences directory: /home/stwg/.Xilinx/Vitis/2020.1/
+Vitis workspace directory: /home/stwg/Workspace/blackboard_vitis/blackboard_2020_1
+Vitis workspace log file location: /home/stwg/Workspace/blackboard_vitis/blackboard_2020_1/.metadata/.log
+Engine tmp dir: 	
+
+Xilinx Environment Variables
+----------------------------
+XILINX_DSP: 
+XILINX_HLS: /tools/Xilinx/Vitis/2020.1
+XILINX_PLANAHEAD: /tools/Xilinx/Vitis/2020.1
+XILINX_SDK: /tools/Xilinx/Vitis/2020.1
+XILINX_VITIS: /tools/Xilinx/Vitis/2020.1
+XILINX_VIVADO: /tools/Xilinx//Vivado/2020.1
+XILINX_VIVADO_HLS: /tools/Xilinx/Vivado/2020.1
+_RDI_DONT_SET_XILINX_AS_PATH: True
+
+
+Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+
+*/
+
+closeView("Welcome", "ViewIntroAdapterPart", "CTabItem.WELCOME");
+selectToolBarMenuButton("New", "WorkbenchWindow", "ToolItem.NEW");
+selectMenuItem("Platform Project", "Explorer", "WorkbenchWindow", "MenuItem.PLATFORM_PROJECT");
+setTextField("blackboard_bist", "New Platform Project (Create new platform project)", "NewPlatformProjectWizard", "Text.PLATFORM_PROJECT_NAME");
+selectButton("Next", "New Platform Project (Create new platform project)", "NewPlatformProjectWizard", "Button.NEXT");
+selectButton("Browse", "New Platform Project (Platform)", "NewPlatformProjectWizard", "Button.BROWSE");
+setFileDialog("/home/stwg/Workspace/blackboard/bist/revD/bist_proj/bist.xsa", "Create Platform from XSA", "SDXFileDialog", "Button.OK");
+selectButton("Finish", "New Platform Project (Platform)", "NewPlatformProjectWizard", "Button.FINISH");
+selectTree("Board Support Package", "blackboard_bist > ps7_cortexa9_0 > zynq_fsbl", "blackboard_bist", "ScwEditor", "Tree");
+selectTab("Drivers", "Drivers", "ScwEditor", "TabItem.DRIVERS");
+selectButton("Modify BSP Settings", "blackboard_bist", "ScwEditor", "Button.MODIFY_BSP_SETTINGS");
+selectTreeTable("Overview", "Board Support Package Settings", "BspSettingsView", "TreeViewer.NavInfoProvider");
+selectTreeTable("ps7_cortexa9_0", "Overview > drivers", "Board Support Package Settings", "BspSettingsView", "TreeViewer.NavInfoProvider");
+selectTreeTable("drivers", "Overview", "Board Support Package Settings", "BspSettingsView", "TreeViewer.NavInfoProvider");
+selectTreeTable("standalone", "Overview", "Board Support Package Settings", "BspSettingsView", "TreeViewer.NavInfoProvider");
+selectTreeTable("stdin", "Overview", "Board Support Package Settings", "BspSettingsView", "TreeViewer.PropertyProvider");
+selectTreeTable("stdout", "Overview", "Board Support Package Settings", "BspSettingsView", "TreeViewer.PropertyProvider");
+selectButton("OK", "Board Support Package Settings", "BspSettingsView", "Button.OK");
+closeView("blackboard_bist", "blackboard_bist/platform.spr", "ScwEditor", "CTabItem.BLACKBOARD_BIST");
+selectMenuItem("Project", "blackboard_bist", "WorkbenchWindow", "MenuItem.PROJECT");
+selectMenuItem("Clean", "blackboard_bist", "WorkbenchWindow", "MenuItem.CLEAN");
+selectButton("Clean", "Clean", "CleanDialog", "Button.CLEAN");
+selectMenuItem("File", "WorkbenchWindow", "MenuItem.FILE");
+selectMenuItem("Export", "WorkbenchWindow", "MenuItem.EXPORT");
+selectTree("blackboard_bist", "Platform Projects", "Export Vitis Projects", "SdxArchiveExportDialog", "Tree.BLACKBOARD_BIST");
+selectButton("Browse", "Export Vitis Projects", "SdxArchiveExportDialog", "Button.BROWSE");
+setDirectoryDialog("/home/stwg/Workspace/blackboard_vitis", "Directory", "SDXDirectoryDialog", "Button.OK");
+setTextField("Blackboard_revD", "Export Vitis Projects", "SdxArchiveExportDialog", "Text.ARCHIVE_FILE");
+setTextField("Blackboard_revD_plat_v1_00_beta_Vitis2020_1.zip", "Export Vitis Projects", "SdxArchiveExportDialog", "Text.ARCHIVE_FILE");
+selectButton("OK", "Export Vitis Projects", "SdxArchiveExportDialog", "Button.OK");
+selectButton("Yes", "Export Vitis Projects", "MessageDialog", "Button.YES");
+selectButton("OK", "Export Vitis Projects", "MessageDialog", "Button.OK");
+selectTree("blackboard_bist", "Explorer", "ProjectExplorer", "Tree");
+selectMenuItem("Project", "blackboard_bist", "WorkbenchWindow", "MenuItem.PROJECT");
+selectMenuItem("Build Project", "blackboard_bist", "WorkbenchWindow", "MenuItem.BUILD_PROJECT");
